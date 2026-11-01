@@ -7,6 +7,7 @@
   <title>Void Big Shine Calculator</title>
   <link rel="stylesheet" href="style.css">
   <script defer src="https://cdn.jsdelivr.net/npm/mathjs@14.8.1/lib/browser/math.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/decimal.js@10.5.0/decimal.min.js"></script>
   <script defer src="script.js"></script>
 </head>
 <body>
@@ -21,7 +22,7 @@
     <section class="intro">
       <p class="eyebrow">BEYOND ORDINARY CALCULATION</p>
       <h1>特殊計算を、<span>ひとつの場所で。</span></h1>
-      <p class="lead">ゼータ関数、ガンマ関数、総和、無限積、オイラー積。数式を入力して計算。</p>
+      <p class="lead">特殊関数、級数、巨大整数、任意精度小数。膨大な計算をブラウザで実行。</p>
     </section>
 
     <section class="calculator panel">
@@ -46,7 +47,7 @@
         <button data-expression="sum(&quot;1/n^2&quot;, 1, 1000)">Σ 1/n²</button>
         <button data-expression="prod(&quot;1 - 1/n^2&quot;, 2, 1000)">Π (1−1/n²)</button>
         <button data-expression="zetaEuler(2, 1000)">Euler product</button>
-        <button data-expression="delta(3, 3)">δ(3,3)</button>
+        <button data-expression="delta(3, 3)">δ(3,3)</button><button data-expression="fact(100)">100!</button><button data-expression="choose(100, 50)">C(100,50)</button><button data-expression="ddiv(&quot;1&quot;, &quot;7&quot;, 100)">1 ÷ 7（100桁）</button>
       </div>
       <div class="result-area" aria-live="polite">
         <div class="result-top"><span class="eyebrow">RESULT</span><span id="status" class="status">READY</span></div>
@@ -55,7 +56,7 @@
       </div>
     </section>
 
-    <section class="functions-section">
+    <section class="functions-section"><div class="section-heading"><div><p class="eyebrow">BIG NUMBER LAB</p><h2>巨大数・高精度演算</h2></div><span class="section-note">EXACT / ARBITRARY PRECISION</span></div><div class="function-grid"><article class="function-card"><span class="symbol">n!</span><h3>巨大階乗</h3><code>fact(n)</code><p>BigIntで整数階乗を正確に計算。上限は100,000。</p><button data-expression="fact(100)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">C(n,k)</span><h3>組合せ</h3><code>choose(n,k)</code><p>二項係数をBigIntで正確に計算。</p><button data-expression="choose(100,50)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">Fₙ</span><h3>フィボナッチ数</h3><code>fib(n)</code><p>高速倍加法で巨大な項を計算。</p><button data-expression="fib(1000)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">ℤ</span><h3>巨大整数べき乗</h3><code>bigPow(a,n)</code><p>BigIntによる整数べき乗。</p><button data-expression="bigPow(2,1000)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">＋ − × ÷</span><h3>高精度小数</h3><code>dadd / dsub / dmul / ddiv</code><p>Decimal.jsで指定桁数の十進演算。</p><button data-expression="ddiv(&quot;1&quot;,&quot;7&quot;,100)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">√x</span><h3>高精度平方根</h3><code>dsqrt(x,p)</code><p>指定した有効桁数で平方根を計算。</p><button data-expression="dsqrt(&quot;2&quot;,100)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">gcd</span><h3>最大公約数</h3><code>gcd(a,b)</code><p>巨大整数対応のユークリッドの互除法。</p><button data-expression="gcd(&quot;12345678901234567890&quot;,&quot;9876543210&quot;)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">lcm</span><h3>最小公倍数</h3><code>lcm(a,b)</code><p>BigIntで正確に計算。</p><button data-expression="lcm(123456,789012)">式を入力 ↗</button></article></div></section><section class="functions-section">
       <div class="section-heading"><div><p class="eyebrow">FUNCTION INDEX</p><h2>対応関数</h2></div><span class="section-note">SELECT A FORMULA</span></div>
       <div class="function-grid">
         <article class="function-card"><span class="symbol">ζ(s)</span><h3>リーマンゼータ関数</h3><code>zeta(s)</code><p>解析接続を含むゼータ関数の数値評価。</p><button data-expression="zeta(2)">式を入力 <span>↗</span></button></article>
@@ -71,7 +72,7 @@
 
     <section class="notice panel">
       <span class="notice-icon">i</span>
-      <div><h3>計算上の注意</h3><p>この電卓は JavaScript の倍精度浮動小数点数による数値計算。総和・積・オイラー積は指定範囲で打ち切った近似値で、数学的な厳密値ではない。ディラックのデルタ関数 δ(x) は通常の関数ではなく分布なので、数値を返す関数としては実装していない。ここでの <code>delta(a,b)</code> はクロネッカーのデルタ。</p></div>
+      <div><h3>計算上の注意</h3><p>通常の関数や級数は JavaScript の倍精度浮動小数点数で評価する。fact・choose・fib・bigPow・gcd・lcm は BigInt による整数演算、高精度小数関数 dadd などは Decimal.js による十進演算。総和・積・オイラー積は指定範囲で打ち切った近似値で、数学的な厳密値ではない。ディラックのデルタ関数 δ(x) は通常の関数ではなく分布なので、数値を返す関数としては実装していない。ここでの <code>delta(a,b)</code> はクロネッカーのデルタ。</p></div>
     </section>
   </main>
   <footer><span>VOID BIG SHINE CALCULATOR</span><span>BUILT FOR THE CURIOUS.</span></footer>
