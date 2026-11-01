@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d1c">
+  <title>Void Big Shine Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjs@14.8.1/lib/browser/math.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="brand-mark">∑</span><span>VOID <b>BIG SHINE</b><small>ADVANCED MATHEMATICAL ENGINE</small></span></a>
+    <span class="version">NUMERIC ENGINE / 01</span>
+  </header>
+
+  <main class="shell">
+    <section class="intro">
+      <p class="eyebrow">BEYOND ORDINARY CALCULATION</p>
+      <h1>特殊計算を、<span>ひとつの場所で。</span></h1>
+      <p class="lead">ゼータ関数、ガンマ関数、総和、無限積、オイラー積。数式を入力して計算。</p>
+    </section>
+
+    <section class="calculator panel">
+      <div class="panel-heading">
+        <div><span class="live-dot"></span><span class="eyebrow">CALCULATION CONSOLE</span></div>
+        <span class="engine-label">MATH.JS ENGINE</span>
+      </div>
+      <label class="field-label" for="expression">数式入力</label>
+      <div class="input-wrap">
+        <span class="prompt">f(x) =</span>
+        <input id="expression" type="text" spellcheck="false" autocomplete="off" placeholder="例: zeta(2)" aria-label="計算する数式">
+        <button id="calculate" class="calculate-button">計算する <span>↗</span></button>
+      </div>
+      <div class="settings-row">
+        <label for="terms">級数・積の項数上限</label>
+        <div class="term-control"><input id="terms" type="number" min="10" max="50000" step="10" value="1000"><span>terms</span></div>
+      </div>
+      <div class="examples">
+        <span class="examples-title">QUICK INPUT</span>
+        <button data-expression="zeta(2)">ζ(2)</button>
+        <button data-expression="gamma(5)">Γ(5)</button>
+        <button data-expression="sum(&quot;1/n^2&quot;, 1, 1000)">Σ 1/n²</button>
+        <button data-expression="prod(&quot;1 - 1/n^2&quot;, 2, 1000)">Π (1−1/n²)</button>
+        <button data-expression="zetaEuler(2, 1000)">Euler product</button>
+        <button data-expression="delta(3, 3)">δ(3,3)</button>
+      </div>
+      <div class="result-area" aria-live="polite">
+        <div class="result-top"><span class="eyebrow">RESULT</span><span id="status" class="status">READY</span></div>
+        <output id="result">ここに計算結果が表示される</output>
+        <p id="detail" class="detail">数式を入力するか、クイック入力を選択。</p>
+      </div>
+    </section>
+
+    <section class="functions-section">
+      <div class="section-heading"><div><p class="eyebrow">FUNCTION INDEX</p><h2>対応関数</h2></div><span class="section-note">SELECT A FORMULA</span></div>
+      <div class="function-grid">
+        <article class="function-card"><span class="symbol">ζ(s)</span><h3>リーマンゼータ関数</h3><code>zeta(s)</code><p>解析接続を含むゼータ関数の数値評価。</p><button data-expression="zeta(2)">式を入力 <span>↗</span></button></article>
+        <article class="function-card"><span class="symbol">Γ(z)</span><h3>ガンマ関数</h3><code>gamma(z)</code><p>階乗を複素数・実数へ拡張した関数。</p><button data-expression="gamma(5)">式を入力 <span>↗</span></button></article>
+        <article class="function-card"><span class="symbol">Σ</span><h3>有限総和・級数近似</h3><code>sum("式", a, b)</code><p>n=a から b まで式を加算。</p><button data-expression="sum(&quot;1/n^2&quot;, 1, 1000)">式を入力 <span>↗</span></button></article>
+        <article class="function-card"><span class="symbol">Π</span><h3>有限積・無限積近似</h3><code>prod("式", a, b)</code><p>指定範囲の積。無限積は部分積で近似。</p><button data-expression="prod(&quot;1 - 1/n^2&quot;, 2, 1000)">式を入力 <span>↗</span></button></article>
+        <article class="function-card"><span class="symbol">∏ p</span><h3>オイラー積</h3><code>zetaEuler(s, N)</code><p>素数 p ≤ N に対するゼータ関数のオイラー積。</p><button data-expression="zetaEuler(2, 1000)">式を入力 <span>↗</span></button></article>
+        <article class="function-card"><span class="symbol">δᵢⱼ</span><h3>クロネッカーのデルタ</h3><code>delta(a, b)</code><p>a=b なら1、それ以外なら0。</p><button data-expression="delta(3, 3)">式を入力 <span>↗</span></button></article>
+        <article class="function-card"><span class="symbol">H(x)</span><h3>ヘヴィサイド関数</h3><code>heaviside(x)</code><p>ステップ関数。x=0 では 1/2。</p><button data-expression="heaviside(0)">式を入力 <span>↗</span></button></article>
+        <article class="function-card"><span class="symbol">B(a,b)</span><h3>ベータ関数</h3><code>beta(a, b)</code><p>ガンマ関数を用いたベータ関数。</p><button data-expression="beta(2, 3)">式を入力 <span>↗</span></button></article>
+      </div>
+    </section>
+
+    <section class="notice panel">
+      <span class="notice-icon">i</span>
+      <div><h3>計算上の注意</h3><p>この電卓は JavaScript の倍精度浮動小数点数による数値計算。総和・積・オイラー積は指定範囲で打ち切った近似値で、数学的な厳密値ではない。ディラックのデルタ関数 δ(x) は通常の関数ではなく分布なので、数値を返す関数としては実装していない。ここでの <code>delta(a,b)</code> はクロネッカーのデルタ。</p></div>
+    </section>
+  </main>
+  <footer><span>VOID BIG SHINE CALCULATOR</span><span>BUILT FOR THE CURIOUS.</span></footer>
+</body>
+</html>
