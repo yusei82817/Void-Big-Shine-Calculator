@@ -28,13 +28,13 @@
     <section class="calculator panel">
       <div class="panel-heading">
         <div><span class="live-dot"></span><span class="eyebrow">CALCULATION CONSOLE</span></div>
-        <span class="engine-label">MATH.JS ENGINE</span>
+        <span class="engine-label">WEB WORKER / MATH.JS</span>
       </div>
       <label class="field-label" for="expression">数式入力</label>
       <div class="input-wrap">
         <span class="prompt">f(x) =</span>
         <input id="expression" type="text" spellcheck="false" autocomplete="off" placeholder="例: zeta(2)" aria-label="計算する数式">
-        <button id="calculate" class="calculate-button">計算する <span>↗</span></button>
+        <button id="calculate" class="calculate-button">計算する <span>↗</span></button><button id="cancel" class="cancel-button" hidden>中止</button>
       </div>
       <div class="settings-row">
         <label for="terms">級数・積の項数上限</label>
@@ -47,7 +47,7 @@
         <button data-expression="sum(&quot;1/n^2&quot;, 1, 1000)">Σ 1/n²</button>
         <button data-expression="prod(&quot;1 - 1/n^2&quot;, 2, 1000)">Π (1−1/n²)</button>
         <button data-expression="zetaEuler(2, 1000)">Euler product</button>
-        <button data-expression="delta(3, 3)">δ(3,3)</button><button data-expression="fact(100)">100!</button><button data-expression="choose(100, 50)">C(100,50)</button><button data-expression="ddiv(&quot;1&quot;, &quot;7&quot;, 100)">1 ÷ 7（100桁）</button>
+        <button data-expression="delta(3, 3)">δ(3,3)</button><button data-expression="fact(100)">100!</button><button data-expression="choose(100, 50)">C(100,50)</button><button data-expression="ddiv(&quot;1&quot;, &quot;7&quot;, 100)">1 ÷ 7（100桁）</button><button data-expression="factorize(&quot;1234567890&quot;)">素因数分解</button><button data-expression="primeCount(1000000)">π(10⁶)</button><button data-expression="modPow(7, 560, 561)">modPow</button>
       </div>
       <div class="result-area" aria-live="polite">
         <div class="result-top"><span class="eyebrow">RESULT</span><span id="status" class="status">READY</span></div>
@@ -70,7 +70,7 @@
       </div>
     </section>
 
-    <section class="notice panel">
+    <section class="functions-section"><div class="section-heading"><div><p class="eyebrow">NUMBER THEORY LAB</p><h2>整数論ツール</h2></div><span class="section-note">PRIME / MODULAR ARITHMETIC</span></div><div class="function-grid"><article class="function-card"><span class="symbol">p?</span><h3>素数判定</h3><code>isPrime(n)</code><p>最大10¹²までの整数を試し割りで判定。</p><button data-expression="isPrime(999983)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">p × p</span><h3>素因数分解</h3><code>factorize(n)</code><p>最大10¹²までの整数を素因数分解。</p><button data-expression="factorize(&quot;1234567890&quot;)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">π(x)</span><h3>素数計数関数</h3><code>primeCount(n)</code><p>n以下の素数の個数を篩で数える。上限500万。</p><button data-expression="primeCount(1000000)">式を入力 ↗</button></article><article class="function-card"><span class="symbol">aᵉ mod m</span><h3>剰余べき乗</h3><code>modPow(a,e,m)</code><p>巨大整数の繰り返し二乗法による剰余計算。</p><button data-expression="modPow(7,560,561)">式を入力 ↗</button></article></div></section><section class="notice panel">
       <span class="notice-icon">i</span>
       <div><h3>計算上の注意</h3><p>通常の関数や級数は JavaScript の倍精度浮動小数点数で評価する。fact・choose・fib・bigPow・gcd・lcm は BigInt による整数演算、高精度小数関数 dadd などは Decimal.js による十進演算。総和・積・オイラー積は指定範囲で打ち切った近似値で、数学的な厳密値ではない。ディラックのデルタ関数 δ(x) は通常の関数ではなく分布なので、数値を返す関数としては実装していない。ここでの <code>delta(a,b)</code> はクロネッカーのデルタ。</p></div>
     </section>
