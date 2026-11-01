@@ -1,23 +1,31 @@
 (() => {
 "use strict";
-const input=document.getElementById("expression"),termsInput=document.getElementById("terms"),result=document.getElementById("result"),detail=document.getElementById("detail"),status=document.getElementById("status"),calculateButton=document.getElementById("calculate");
-function integer(v,label){const n=Number(v);if(!Number.isSafeInteger(n))throw Error(label+" は安全な整数で指定してね。");return n;}
-function big(v,label="値"){const s=String(v);if(!/^-?\d+$/.test(s))throw Error(label+" は整数で指定してね。");return BigInt(s);}
-function range(a,b){a=integer(a,"開始値");b=integer(b,"終了値");if(b<a||b-a>50000)throw Error("範囲は最大50,001項にしてね。");return[a,b];}
-function sum(e,a,b){[a,b]=range(a,b);let s=0,c=0;for(let n=a;n<=b;n++){const x=Number(math.evaluate(String(e),{n})),y=x-c,t=s+y;c=(t-s)-y;s=t;}return s;}
-function prod(e,a,b){[a,b]=range(a,b);let v=1;for(let n=a;n<=b;n++)v=math.multiply(v,math.evaluate(String(e),{n}));return v;}
-function prime(n){if(n<2)return false;if(n%2===0)return n===2;for(let d=3;d*d<=n;d+=2)if(n%d===0)return false;return true;}
-function euler(s,N){N=integer(N,"N");if(N<2||N>50000||typeof s!=="number"||!Number.isFinite(s)||s<=1)throw Error("zetaEuler は s>1、2≤N≤50,000 で指定してね。");let v=1,c=0;for(let p=2;p<=N;p++)if(prime(p)){v/=1-Math.pow(p,-s);c++;}return{value:v,count:c,max:N};}
-function fact(n){n=integer(n,"n");if(n<0||n>100000)throw Error("fact は 0〜100,000。");let v=1n;for(let i=2n;i<=BigInt(n);i++)v*=i;return v.toString();}
-function choose(n,k){n=integer(n,"n");k=integer(k,"k");if(n<0||n>100000||k<0||k>n)throw Error("choose は 0≤k≤n≤100,000。");k=Math.min(k,n-k);let v=1n;for(let i=1;i<=k;i++)v=v*BigInt(n-k+i)/BigInt(i);return v.toString();}
-function fib(n){n=integer(n,"n");if(n<0||n>100000)throw Error("fib は 0〜100,000。");function f(k){if(!k)return[0n,1n];const[a,b]=f(Math.floor(k/2)),c=a*(2n*b-a),d=a*a+b*b;return k%2?[d,c+d]:[c,d];}return f(n)[0].toString();}
-function bigPow(a,n){n=integer(n,"指数");if(n<0||n>100000)throw Error("指数は0〜100,000。");return(big(a,"底")**BigInt(n)).toString();}
-function gcd(a,b){a=big(a);b=big(b);if(a<0n)a=-a;if(b<0n)b=-b;while(b)[a,b]=[b,a%b];return a.toString();}
-function lcm(a,b){a=big(a);b=big(b);if(!a||!b)return"0";let x=a<0n?-a:a,y=b<0n?-b:b;while(y)[x,y]=[y,x%y];let v=a/x*b;return(v<0n?-v:v).toString();}
-function dec(op,a,b,p=80){p=integer(p,"精度");if(p<1||p>10000)throw Error("精度は1〜10,000桁。");const D=Decimal.clone({precision:p,rounding:Decimal.ROUND_HALF_EVEN}),x=new D(String(a)),y=b===undefined?null:new D(String(b));if(!x.isFinite()||(y&&!y.isFinite()))throw Error("有限の数値を指定してね。");if(op==="add")return x.plus(y).toString();if(op==="sub")return x.minus(y).toString();if(op==="mul")return x.times(y).toString();if(op==="div"){if(y.isZero())throw Error("0では割れないよ。");return x.div(y).toString();}if(op==="pow")return x.pow(y).toString();if(op==="sqrt"){if(x.isNegative())throw Error("負数の実数平方根は計算できないよ。");return x.sqrt().toString();}}
-const scope={sum,prod,zetaEuler:euler,delta:(a,b)=>Number(a)===Number(b)?1:0,heaviside:x=>Number(x)<0?0:Number(x)>0?1:.5,sinc:x=>Number(x)===0?1:math.sin(x)/x,beta:(a,b)=>math.gamma(a)*math.gamma(b)/math.gamma(a+b),fact,choose,fib,bigPow,gcd,lcm,dadd:(a,b,p)=>dec("add",a,b,p),dsub:(a,b,p)=>dec("sub",a,b,p),dmul:(a,b,p)=>dec("mul",a,b,p),ddiv:(a,b,p)=>dec("div",a,b,p),dpow:(a,b,p)=>dec("pow",a,b,p),dsqrt:(a,p)=>dec("sqrt",a,undefined,p)};
-function fmt(v){if(typeof v==="string")return v;if(v&&v.value!==undefined&&v.count!==undefined)return math.format(v.value,{precision:14});return math.format(v,{precision:14,lowerExp:-9,upperExp:14});}
-function calculate(){const e=input.value.trim();if(!e){result.textContent="数式を入力してね";return;}try{const started=performance.now(),v=math.evaluate(e,scope),ms=(performance.now()-started).toFixed(2);result.textContent=fmt(v);status.textContent="SUCCESS";detail.textContent=/\b(fact|choose|fib|bigPow|gcd|lcm)\s*\(/i.test(e)?"BigIntによる正確な整数演算。":/\bd(add|sub|mul|div|pow|sqrt)\s*\(/i.test(e)?"Decimal.jsによる指定有効桁数の十進演算。":/\b(sum|prod|zetaEuler)\s*\(/i.test(e)?"有限範囲での近似計算。":"数値評価完了。";detail.textContent+=" 計算時間 "+ms+" ms";}catch(err){result.textContent="計算できませんでした";detail.textContent=err.message||"数式を確認してね。";status.textContent="ERROR";}}
-calculateButton.addEventListener("click",calculate);input.addEventListener("keydown",e=>{if(e.key==="Enter")calculate();});document.querySelectorAll("[data-expression]").forEach(b=>b.addEventListener("click",()=>{input.value=b.dataset.expression;input.focus();calculate();}));
-if(typeof math==="undefined"||typeof Decimal==="undefined"){result.textContent="数値エンジンを読み込めません";detail.textContent="ネット接続を確認して再読み込みしてね。";status.textContent="OFFLINE";calculateButton.disabled=true;}
+const input=document.getElementById("expression"),termsInput=document.getElementById("terms"),result=document.getElementById("result"),detail=document.getElementById("detail"),status=document.getElementById("status"),calculateButton=document.getElementById("calculate"),cancelButton=document.getElementById("cancel");
+let worker=null,sequence=0;
+function setBusy(busy){calculateButton.disabled=busy;cancelButton.hidden=!busy;status.textContent=busy?"RUNNING":"READY";}
+function stopWorker(){if(worker){worker.terminate();worker=null;}setBusy(false);}
+function calculate(){
+ const expression=input.value.trim();
+ if(!expression){result.textContent="数式を入力してね";detail.textContent="式を入力するか、クイック入力を選んでね。";return;}
+ const raw=Number(termsInput.value||1000),maxTerms=Math.min(50000,Math.max(10,Number.isFinite(raw)?Math.floor(raw):1000));
+ termsInput.value=String(maxTerms);
+ stopWorker();
+ const id=++sequence;
+ try{
+  worker=new Worker("./worker.js");
+  setBusy(true);status.textContent="RUNNING";result.textContent="計算中…";detail.textContent="別スレッドで計算しているよ。画面操作は続けられる。";
+  worker.onmessage=event=>{
+   if(event.data.id!==id)return;
+   worker.terminate();worker=null;setBusy(false);
+   if(event.data.ok){result.textContent=event.data.result;detail.textContent=event.data.detail;status.textContent="SUCCESS";}
+   else{result.textContent="計算できませんでした";detail.textContent=event.data.error;status.textContent="ERROR";}
+  };
+  worker.onerror=event=>{worker?.terminate();worker=null;setBusy(false);result.textContent="計算エラー";detail.textContent="Workerを起動できなかったか、スクリプトに問題があるよ。";status.textContent="ERROR";};
+  worker.postMessage({id,expression,maxTerms});
+ }catch(error){setBusy(false);result.textContent="Workerを起動できません";detail.textContent=error.message;status.textContent="ERROR";}
+}
+calculateButton.addEventListener("click",calculate);
+cancelButton.addEventListener("click",()=>{stopWorker();result.textContent="計算を中止したよ";detail.textContent="処理を終了しました。";status.textContent="CANCELLED";});
+input.addEventListener("keydown",event=>{if(event.key==="Enter")calculate();});
+document.querySelectorAll("[data-expression]").forEach(button=>button.addEventListener("click",()=>{input.value=button.dataset.expression;input.focus();calculate();}));
 })();
