@@ -54,7 +54,7 @@
   function eulerProduct(s, limit) {
     const max = integer(limit, "上限 N");
     if (max < 2 || max > 50000) throw new Error("オイラー積の上限 N は 2〜50,000 にしてね。");
-    if (math.isComplex(s) || Number(s) <= 1) {
+    if (typeof s !== "number" || !Number.isFinite(s) || s <= 1) {
       throw new Error("この実数版オイラー積は s > 1 の実数で使ってね。");
     }
     let value = 1;
