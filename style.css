@@ -6,3 +6,23 @@
 
 .translator-section{padding:48px 0 42px}.translator-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.translator-card{min-width:0;padding:20px;background:rgba(17,24,42,.9);border:1px solid #26334c;border-radius:14px}.translator-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.translator-heading h3{font-size:15px;margin:0}.translator-heading span{font:10px var(--mono);letter-spacing:.12em;color:var(--cyan)}.translator-card .field-label{margin:18px 0 8px}.translator-card textarea{display:block;width:100%;resize:vertical;min-height:112px;padding:12px;background:#080e1c;border:1px solid #34435f;border-radius:9px;color:var(--text);font:13px/1.7 var(--sans);outline:none}.translator-card textarea:focus{border-color:var(--cyan)}.translator-card textarea[readonly]{background:#0b1323;color:#c9d8f0}.translate-button{width:100%;margin-top:12px;padding:12px;border:0;border-radius:8px;background:linear-gradient(110deg,#5bdce7,#9e8cff);color:#08111d;font-weight:800;cursor:pointer}.translate-button:disabled{opacity:.5;cursor:wait}.translation-status,.translation-note{font-size:10px;line-height:1.8;color:var(--muted)}.translation-status{margin:9px 0 0;min-height:18px}.translation-note{margin:14px 2px 0}
 @media(max-width:650px){.translator-grid{grid-template-columns:1fr}.translator-card{padding:16px}}
+
+
+/* PWA install affordance */
+.install-button{border:1px solid #52617f;border-radius:8px;background:#14213a;color:var(--cyan);padding:9px 12px;font:11px var(--sans);font-weight:700;cursor:pointer;white-space:nowrap}
+.install-button:hover{border-color:var(--cyan);background:#1a2b49}
+.install-button[hidden]{display:none}
+.install-button:disabled{opacity:.55;cursor:wait}
+
+/* Sector arc-length calculator */
+.arc-calculator{padding:26px;margin:34px 0 10px}
+.arc-heading{margin:24px 0 18px}
+.arc-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.arc-fields label{display:block;color:#c5cfe2;font-size:12px}
+.arc-fields input{display:block;width:100%;margin-top:9px;padding:13px 14px;background:#080e1c;border:1px solid #34435f;border-radius:9px;color:var(--text);font:15px var(--mono);outline:none}
+.arc-fields input:focus{border-color:var(--cyan)}
+.arc-actions{margin-top:16px}
+.arc-result{margin-top:20px;padding:18px 20px;border-radius:12px;background:#080e1a;border:1px solid #25334d}
+.arc-result output{font:clamp(21px,4vw,30px) var(--mono);color:var(--cyan);margin:12px 0 8px;overflow-wrap:anywhere}
+.arc-result .detail{line-height:1.8}
+@media(max-width:650px){.arc-calculator{padding:19px}.arc-fields{grid-template-columns:1fr}.install-button{font-size:10px;padding:8px}}
