@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "Void Big Shine Calculator",
+  "short_name": "Void Calculator",
+  "description": "特殊関数、級数、巨大整数、任意精度小数を計算する数学ツール。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#090d1c",
+  "theme_color": "#090d1c",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
