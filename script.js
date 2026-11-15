@@ -28,4 +28,34 @@ calculateButton.addEventListener("click",calculate);
 cancelButton.addEventListener("click",()=>{stopWorker();result.textContent="計算を中止したよ";detail.textContent="処理を終了しました。";status.textContent="CANCELLED";});
 input.addEventListener("keydown",event=>{if(event.key==="Enter")calculate();});
 document.querySelectorAll("[data-expression]").forEach(button=>button.addEventListener("click",()=>{input.value=button.dataset.expression;input.focus();calculate();}));
+
+const translationPairs=[
+ {input:document.getElementById("ja-input"),output:document.getElementById("ja-output"),button:document.getElementById("ja-translate"),status:document.getElementById("ja-status"),lang:"ja|en"},
+ {input:document.getElementById("en-input"),output:document.getElementById("en-output"),button:document.getElementById("en-translate"),status:document.getElementById("en-status"),lang:"en|ja"}
+];
+translationPairs.forEach(pair=>{
+ pair.button.addEventListener("click",async()=>{
+  const source=pair.input.value.trim();
+  if(!source){pair.status.textContent="翻訳する文章を入力してください。";return;}
+  if(source.length>5000){pair.status.textContent="文章は5,000文字以内にしてください。";return;}
+  pair.button.disabled=true;
+  pair.status.textContent="翻訳中…";
+  try{
+   const url="https://api.mymemory.translated.net/get?q="+encodeURIComponent(source)+"&langpair="+pair.lang;
+   const response=await fetch(url);
+   if(!response.ok) throw new Error("翻訳サービスとの通信に失敗しました。");
+   const data=await response.json();
+   if(data.responseStatus!==200 || !data.responseData?.translatedText) throw new Error(data.responseDetails||"翻訳結果を取得できませんでした。");
+   const decoded=document.createElement("textarea");
+   decoded.innerHTML=data.responseData.translatedText;
+   pair.output.value=decoded.value;
+   pair.status.textContent="翻訳完了";
+  }catch(error){
+   pair.status.textContent="翻訳エラー："+(error.message||"通信を確認してください。");
+  }finally{
+   pair.button.disabled=false;
+  }
+ });
+});
+
 })();
