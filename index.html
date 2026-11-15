@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090d1c">
+  <meta name="description" content="特殊関数、級数、巨大整数、任意精度小数、幾何計算に対応した数学計算ツール。">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="./manifest.webmanifest">
@@ -30,6 +32,7 @@
   <header class="topbar">
     <a class="brand" href="./"><span class="brand-mark">∑</span><span>VOID <b>BIG SHINE</b><small>ADVANCED MATHEMATICAL ENGINE</small></span></a>
     <span class="version">NUMERIC ENGINE / 01</span>
+    <button id="install-app" class="install-button" type="button" hidden>アプリをインストール ↗</button>
   </header>
 
   <main class="shell">
@@ -67,6 +70,33 @@
         <div class="result-top"><span class="eyebrow">RESULT</span><span id="status" class="status">READY</span></div>
         <output id="result">ここに計算結果が表示される</output>
         <p id="detail" class="detail">数式を入力するか、クイック入力を選択。</p>
+      </div>
+    </section>
+
+    <section class="arc-calculator panel" aria-labelledby="arc-heading">
+      <div class="panel-heading">
+        <div><span class="live-dot"></span><span class="eyebrow">GEOMETRY LAB</span></div>
+        <span class="engine-label">SECTOR / ARC LENGTH</span>
+      </div>
+      <div class="section-heading arc-heading">
+        <div><p class="eyebrow">CIRCLE GEOMETRY</p><h2 id="arc-heading">扇形の弧の長さ</h2></div>
+        <span class="section-note">L = 2πr × θ / 360</span>
+      </div>
+      <div class="arc-fields">
+        <label for="arc-radius">半径
+          <input id="arc-radius" type="number" min="0" step="any" inputmode="decimal" placeholder="例: 5" required>
+        </label>
+        <label for="arc-angle">中央角（度）
+          <input id="arc-angle" type="number" min="0" max="360" step="any" inputmode="decimal" placeholder="例: 90" required>
+        </label>
+      </div>
+      <div class="arc-actions">
+        <button id="arc-calculate" class="calculate-button" type="button">弧の長さを計算 ↗</button>
+      </div>
+      <div class="arc-result" aria-live="polite">
+        <span class="eyebrow">ARC LENGTH</span>
+        <output id="arc-result">半径と中央角を入力してください</output>
+        <p id="arc-detail" class="detail">弧の長さは、半径と中央角から求められます。角度は度数法で入力。</p>
       </div>
     </section>
 
