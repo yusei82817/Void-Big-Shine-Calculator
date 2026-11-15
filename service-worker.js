@@ -60,7 +60,7 @@ self.addEventListener("fetch", event => {
         const response = await fetch(request);
         if (response.ok) {
           const cache = await caches.open(CACHE_NAME);
-          event.waitUntil(cache.put("./index.html", response.clone()));
+          await cache.put("./index.html", response.clone());
         }
         return response;
       } catch {
@@ -76,7 +76,7 @@ self.addEventListener("fetch", event => {
     const response = await fetch(request);
     if (response.ok) {
       const cache = await caches.open(CACHE_NAME);
-      event.waitUntil(cache.put(request, response.clone()));
+      await cache.put(request, response.clone());
     }
     return response;
   })());
