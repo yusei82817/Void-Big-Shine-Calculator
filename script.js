@@ -83,7 +83,12 @@ if(arcCalculate){
    arcDetail.textContent="中央角は0°以上360°以下で入力してください。";
    arcAngle.focus();return;
   }
-  const length=2*Math.PI*radius*angle/360;
+  const length=radius*(2*Math.PI*angle/360);
+  if(!Number.isFinite(length)){
+   arcResult.textContent="数値の範囲を超えています";
+   arcDetail.textContent="半径を小さくして再計算してください。";
+   return;
+  }
   const formatted=Number(length.toPrecision(12)).toString();
   arcResult.textContent=formatted;
   arcDetail.textContent="L = 2π × "+radius+" × "+angle+" / 360 = "+formatted+"。単位は半径と同じです。";
