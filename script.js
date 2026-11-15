@@ -58,4 +58,66 @@ translationPairs.forEach(pair=>{
  });
 });
 
+
+const arcRadius=document.getElementById("arc-radius");
+const arcAngle=document.getElementById("arc-angle");
+const arcCalculate=document.getElementById("arc-calculate");
+const arcResult=document.getElementById("arc-result");
+const arcDetail=document.getElementById("arc-detail");
+if(arcCalculate){
+ arcCalculate.addEventListener("click",()=>{
+  const radiusText=arcRadius.value.trim(),angleText=arcAngle.value.trim();
+  if(radiusText===""||angleText===""){
+   arcResult.textContent="入力が不足しています";
+   arcDetail.textContent="半径と中央角の両方を入力してください。";
+   return;
+  }
+  const radius=Number(radiusText),angle=Number(angleText);
+  if(!Number.isFinite(radius)||radius<0){
+   arcResult.textContent="半径を確認してください";
+   arcDetail.textContent="半径は0以上の有限な数値で入力してください。";
+   arcRadius.focus();return;
+  }
+  if(!Number.isFinite(angle)||angle<0||angle>360){
+   arcResult.textContent="中央角を確認してください";
+   arcDetail.textContent="中央角は0°以上360°以下で入力してください。";
+   arcAngle.focus();return;
+  }
+  const length=2*Math.PI*radius*angle/360;
+  const formatted=Number(length.toPrecision(12)).toString();
+  arcResult.textContent=formatted;
+  arcDetail.textContent="L = 2π × "+radius+" × "+angle+" / 360 = "+formatted+"。単位は半径と同じです。";
+ });
+}
+
+const installButton=document.getElementById("install-app");
+let deferredInstallPrompt=null;
+if(installButton){
+ window.addEventListener("beforeinstallprompt",event=>{
+  event.preventDefault();
+  deferredInstallPrompt=event;
+  installButton.hidden=false;
+ });
+ installButton.addEventListener("click",async()=>{
+  if(!deferredInstallPrompt)return;
+  const promptEvent=deferredInstallPrompt;
+  deferredInstallPrompt=null;
+  installButton.disabled=true;
+  try{
+   await promptEvent.prompt();
+   const choice=await promptEvent.userChoice;
+   installButton.hidden=true;
+   if(choice.outcome==="accepted")installButton.textContent="インストール済み";
+  }catch(error){
+   console.error("PWA install prompt failed:",error);
+  }finally{
+   installButton.disabled=false;
+  }
+ });
+ window.addEventListener("appinstalled",()=>{
+  deferredInstallPrompt=null;
+  installButton.hidden=true;
+ });
+}
+
 })();
