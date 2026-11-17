@@ -1,7 +1,10 @@
 const CACHE_NAME = "void-big-shine-v4";
 const APP_SHELL = [
   "./",
-  "./index.html",\n  "./code_assistant.html",\n  "./code_assistant.css",\n  "./code_assistant.js",
+  "./index.html",
+  "./code_assistant.html",
+  "./code_assistant.css",
+  "./code_assistant.js",
   "./style.css",
   "./script.js",
   "./worker.js",
