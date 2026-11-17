@@ -172,7 +172,16 @@
         count:currentChoices.filter((c) => c.question_id === q.id && c.option_id === option.id).length
       }));
       const total = counts.reduce((sum,item)=>sum+item.count,0);
+      const palette = ["#5bdce7","#9e8cff","#7ce8c6","#f4b66a","#f28ea8","#78a5ff"];
+      let offset = 0;
+      const segments = counts.map((item,i) => {
+        const start = offset;
+        offset += total ? item.count / total * 100 : 0;
+        return palette[i % palette.length] + " " + start.toFixed(2) + "% " + offset.toFixed(2) + "%";
+      });
+      const pie = total ? '<div class="pie-layout"><div class="pie-chart" style="background:conic-gradient('+segments.join(",")+')"></div><div class="pie-legend">'+counts.map((item,i)=>'<div><i style="background:'+palette[i % palette.length]+'"></i><span>'+escapeHtml(item.label)+'</span><b>'+item.count+'</b></div>').join("")+'</div></div>' : "";
       return '<article class="result-question"><h3>'+(index+1)+'. '+escapeHtml(q.question_text)+'</h3><div class="result-subtitle">'+(q.question_type === "single" ? "SINGLE CHOICE" : "MULTIPLE CHOICE")+' · '+total+' SELECTIONS</div>'+
+        pie +
         (counts.length ? counts.map((item) => '<div class="result-option"><span>'+escapeHtml(item.label)+'</span><div class="bar-track"><div class="bar-fill" style="width:'+(total ? item.count/total*100 : 0)+'%"></div></div><span class="result-count">'+item.count+' ('+(total ? (item.count/total*100).toFixed(1) : "0.0")+'%)</span></div>').join("") : '<p class="no-answers">選択肢がありません。</p>')+
         '</article>';
     }).join("");
