@@ -32,6 +32,7 @@
     <p class="sidebar-label">WORKSPACE</p>
     <a class="sidebar-link active" href="./" aria-current="page"><span class="sidebar-icon">∑</span>Calculator</a>
     <a class="sidebar-link" href="./code_assistant.html"><span class="sidebar-icon">&lt;/&gt;</span>Code Writer Assistant</a>
+    <button class="sidebar-link developer-access-button" id="developer-access-open" type="button"><span class="sidebar-icon">⌘</span>開発者権限</button>
     <div class="sidebar-bottom"><span class="sidebar-status"></span> SYSTEM ONLINE <small>VOID BIG SHINE / 01</small></div>
   </aside>
   <div class="ambient ambient-one"></div>
@@ -170,5 +171,96 @@
     </section>
   </main>
   <footer><span>VOID BIG SHINE CALCULATOR</span><span>BUILT FOR THE CURIOUS.</span></footer>
+
+  <dialog class="developer-dialog" id="developer-access-dialog" aria-labelledby="developer-dialog-title">
+    <form id="developer-access-form">
+      <p class="eyebrow">RESTRICTED ACCESS</p>
+      <h2 id="developer-dialog-title">開発者権限</h2>
+      <p class="developer-dialog-description">認証パスワードを入力してください。</p>
+      <label class="field-label" for="developer-password">PASSWORD</label>
+      <input id="developer-password" name="password" type="password" autocomplete="current-password" maxlength="200" required>
+      <p class="developer-access-message" id="developer-access-message" role="status" aria-live="polite"></p>
+      <div class="developer-dialog-actions">
+        <button class="developer-cancel" id="developer-access-cancel" type="button">キャンセル</button>
+        <button class="developer-submit" id="developer-access-submit" type="submit">認証する ↗</button>
+      </div>
+    </form>
+  </dialog>
+  <script>
+    (() => {
+      const dialog = document.getElementById("developer-access-dialog");
+      const openButton = document.getElementById("developer-access-open");
+      const form = document.getElementById("developer-access-form");
+      const passwordInput = document.getElementById("developer-password");
+      const message = document.getElementById("developer-access-message");
+      const submitButton = document.getElementById("developer-access-submit");
+      const cancelButton = document.getElementById("developer-access-cancel");
+      const endpoint = "https://cirmydnldoimshyvjkao.supabase.co/functions/v1/verify-developer-access";
+      let pendingTab = null;
+
+      openButton.addEventListener("click", () => {
+        pendingTab = null;
+        passwordInput.value = "";
+        message.textContent = "";
+        dialog.showModal();
+        passwordInput.focus();
+      });
+
+      cancelButton.addEventListener("click", () => dialog.close());
+      dialog.addEventListener("close", () => {
+        if (pendingTab && !pendingTab.closed) pendingTab.close();
+        pendingTab = null;
+        submitButton.disabled = false;
+        submitButton.textContent = "認証する ↗";
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const password = passwordInput.value;
+        if (!password) return;
+
+        // Open synchronously during the click gesture so popup blockers do not
+        // block the new tab while the server verifies the password.
+        pendingTab = window.open("about:blank", "_blank");
+        if (!pendingTab) {
+          message.textContent = "新しいタブがブロックされました。ポップアップを許可してください。";
+          return;
+        }
+        try { pendingTab.opener = null; } catch {}
+
+        submitButton.disabled = true;
+        submitButton.textContent = "確認中...";
+        message.textContent = "認証サーバーに接続しています。";
+
+        try {
+          const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password })
+          });
+          const result = await response.json();
+          if (!response.ok || result.ok !== true) {
+            message.textContent = result.message || "認証に失敗しました。";
+            pendingTab.close();
+            pendingTab = null;
+            submitButton.disabled = false;
+            submitButton.textContent = "認証する ↗";
+            passwordInput.select();
+            return;
+          }
+
+          pendingTab.location.replace(new URL("./survey.html", window.location.href).href);
+          pendingTab = null;
+          dialog.close();
+        } catch (error) {
+          if (pendingTab && !pendingTab.closed) pendingTab.close();
+          pendingTab = null;
+          message.textContent = "認証サーバーに接続できませんでした。通信環境を確認してください。";
+          submitButton.disabled = false;
+          submitButton.textContent = "再試行";
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
