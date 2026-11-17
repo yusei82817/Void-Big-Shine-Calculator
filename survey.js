@@ -247,13 +247,20 @@
     const form = event.currentTarget;
     const button = form.querySelector("button[type=submit]");
     setBusy(button,true,"送信中...");
+    const formData = new FormData(form);
+    for (const question of publicQuestions) {
+      const values = formData.getAll("q_"+question.id).map((value)=>String(value).trim()).filter(Boolean);
+      if (question.is_required && values.length === 0) {
+        setBusy(button,false);
+        return showMessage("必須項目に回答してください: "+question.question_text,"error");
+      }
+    }
     const responseId = uuid();
     const {error:responseError} = await client.from("responses").insert({id:responseId,survey_id:publicSurvey.id});
     if (responseError) {
       setBusy(button,false);
       return showMessage("回答を送信できませんでした: "+responseError.message,"error");
     }
-    const formData = new FormData(form);
     const answers = [];
     const selectedChoices = [];
     for (const question of publicQuestions) {
