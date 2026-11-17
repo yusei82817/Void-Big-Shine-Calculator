@@ -1,10 +1,13 @@
-const CACHE_NAME = "void-big-shine-v4";
+const CACHE_NAME = "void-big-shine-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./code_assistant.html",
   "./code_assistant.css",
   "./code_assistant.js",
+  "./survey.html",
+  "./survey.css",
+  "./survey.js",
   "./style.css",
   "./script.js",
   "./worker.js",
@@ -63,11 +66,16 @@ self.addEventListener("fetch", event => {
         const response = await fetch(request);
         if (response.ok) {
           const cache = await caches.open(CACHE_NAME);
-          await cache.put("./index.html", response.clone());
+          await cache.put(request, response.clone());
         }
         return response;
       } catch {
-        return (await caches.match(request)) || (await caches.match("./index.html")) || Response.error();
+        const cachedPage = await caches.match(request);
+        if (cachedPage) return cachedPage;
+        if (url.pathname.endsWith("/survey.html")) {
+          return (await caches.match("./survey.html")) || (await caches.match("./index.html")) || Response.error();
+        }
+        return (await caches.match("./index.html")) || Response.error();
       }
     })());
     return;
