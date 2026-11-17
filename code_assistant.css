@@ -1,0 +1,50 @@
+/* Code Writer Assistant */
+.cwa-page{--sidebar-width:238px}
+.app-sidebar{position:fixed;z-index:20;inset:0 auto 0 0;width:var(--sidebar-width);padding:25px 18px;background:rgba(8,13,27,.96);border-right:1px solid #25324c;display:flex;flex-direction:column;backdrop-filter:blur(18px)}
+.sidebar-brand{display:flex;align-items:center;gap:11px;padding:0 8px 28px;color:#edf2ff;text-decoration:none;font-size:11px;font-weight:800;letter-spacing:.12em}
+.sidebar-brand small{display:block;margin-top:5px;color:#7586a5;font:9px var(--mono);letter-spacing:.16em}
+.sidebar-mark{display:grid;place-items:center;width:36px;height:36px;border:1px solid #55718e;border-radius:10px;color:var(--cyan);font:22px Georgia;background:linear-gradient(145deg,#17243b,#0b1222)}
+.sidebar-label{padding:0 10px;color:#697a99;font:9px var(--mono);letter-spacing:.18em;margin:15px 0 12px}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:12px 11px;margin:3px 0;border:1px solid transparent;border-radius:8px;color:#aebbd2;text-decoration:none;font-size:11px;transition:.2s}
+.sidebar-link:hover,.sidebar-link.active{color:#e9fbff;background:linear-gradient(100deg,#152840,#171c35);border-color:#344c68}
+.sidebar-link.active{box-shadow:inset 2px 0 #6ceaf4}
+.sidebar-icon{width:22px;text-align:center;color:var(--cyan);font:15px var(--mono)}
+.sidebar-bottom{margin-top:auto;padding:14px 9px;border-top:1px solid #26334c;color:#7ce8c6;font:9px var(--mono);letter-spacing:.1em}
+.sidebar-bottom small{display:block;margin-top:8px;color:#63728d;font-size:8px}
+.sidebar-status,.prompt-live{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#73edc2;box-shadow:0 0 10px #73edc2}
+.cwa-topbar{margin-left:var(--sidebar-width);padding:0 34px;height:70px}
+.cwa-title{font-size:12px;font-weight:800;letter-spacing:.05em}.cwa-title span{color:#71809d;font:9px var(--mono);letter-spacing:.12em}
+.back-link{color:var(--cyan);font:9px var(--mono);letter-spacing:.1em;text-decoration:none}
+.cwa-main{width:min(100% - 64px,900px);margin:0 auto 0 calc(var(--sidebar-width) + (100% - var(--sidebar-width) - min(100% - var(--sidebar-width) - 64px,900px))/2);padding-top:30px}
+.cwa-hero{text-align:center;padding:30px 0 28px}
+.cwa-kicker{color:#91a5c1;font:9px var(--mono);letter-spacing:.2em}
+.cwa-kicker span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#70efff;box-shadow:0 0 12px #70efff;margin-right:9px}
+.cwa-logo-wrap{width:min(100%,650px);margin:15px auto 0;filter:drop-shadow(0 0 20px #54ddec25)}
+.cwa-logo{display:block;width:100%;height:auto;overflow:visible}
+.cwa-hero h1{margin:2px 0 8px;font-size:clamp(27px,4vw,40px);letter-spacing:.015em}
+.cwa-hero h1 span{color:#82eaf2}
+.cwa-subtitle{font:10px var(--mono);letter-spacing:.22em;color:#b2a4ff}
+.cwa-description{margin:20px 0 0;color:#9eacc5;font-size:12px;line-height:2}
+.cwa-divider{display:flex;align-items:center;justify-content:center;gap:15px;margin:25px auto 0;color:#71819d;font:8px var(--mono);letter-spacing:.17em}
+.cwa-divider span{width:70px;height:1px;background:linear-gradient(90deg,transparent,#49617e)}
+.cwa-divider span:last-child{transform:rotate(180deg)}
+.cwa-divider i{font-style:normal}
+.prompt-panel,.cwa-output-panel{padding:22px;background:linear-gradient(145deg,rgba(20,29,49,.97),rgba(13,20,36,.97));border:1px solid #293852;border-radius:15px;box-shadow:0 18px 60px #0002}
+.prompt-panel-heading,.output-heading{display:flex;align-items:center;justify-content:space-between}
+.prompt-panel .field-label{margin:22px 0 9px}
+.prompt-panel textarea{display:block;width:100%;min-height:125px;resize:vertical;padding:14px;background:#080e1c;border:1px solid #34435f;border-radius:10px;color:#edf2ff;font:13px/1.7 var(--sans);outline:none}
+.prompt-panel textarea:focus{border-color:#70e8f1;box-shadow:0 0 0 2px #70e8f11c}
+.prompt-controls{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-top:14px}
+.language-select-label{display:grid;gap:8px;color:#aab8d0;font-size:10px}
+.language-select-label select{min-width:220px;padding:10px 12px;background:#0a1222;border:1px solid #34435f;border-radius:8px;color:#e8f1ff;font:11px var(--sans)}
+.generate-button{padding:13px 19px;border:0;border-radius:8px;background:linear-gradient(110deg,#5bdce7,#a78bfa);color:#08111d;font:800 10px var(--mono);letter-spacing:.07em;cursor:not-allowed;opacity:.45}
+.generate-button span{margin-left:12px}
+.cwa-notice{margin:12px 0 0;color:#8493ad;font-size:10px;line-height:1.8}
+.cwa-output-panel{margin-top:15px}
+.output-placeholder{min-height:145px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#73839f;text-align:center}
+.output-brackets{font:32px var(--mono);color:#4a7890;text-shadow:0 0 20px #4bd9ec55}
+.output-placeholder p{font-size:11px;margin:12px 0 6px}
+.output-placeholder small{font:8px var(--mono);letter-spacing:.12em;color:#53627e}
+.cwa-footer{display:flex;justify-content:space-between;margin:32px 0 22px;padding:17px 0;border-top:1px solid #1d2a42;color:#5f6e88;font:8px var(--mono);letter-spacing:.13em}
+@media(max-width:800px){.cwa-page{--sidebar-width:190px}.app-sidebar{padding:20px 12px}.sidebar-link{font-size:10px}.cwa-main{width:calc(100% - var(--sidebar-width) - 36px);margin-left:calc(var(--sidebar-width) + 18px)}.cwa-topbar{padding:0 20px}}
+@media(max-width:620px){.cwa-page{--sidebar-width:0px}.app-sidebar{position:relative;width:100%;height:auto;inset:auto;padding:10px 13px;display:grid;grid-template-columns:1fr 1fr;gap:4px;border-right:0;border-bottom:1px solid #25324c}.sidebar-brand{grid-column:1/-1;padding:0 5px 9px}.sidebar-label,.sidebar-bottom{display:none}.sidebar-link{justify-content:center;padding:9px 5px;margin:0;font-size:9px}.cwa-topbar{margin-left:0;height:58px;padding:0 14px}.cwa-title{font-size:10px}.cwa-title span{display:none}.cwa-main{width:calc(100% - 28px);margin:0 auto;padding-top:10px}.cwa-hero{padding:22px 0}.cwa-kicker{font-size:8px}.cwa-description{font-size:11px}.prompt-panel,.cwa-output-panel{padding:16px}.prompt-controls{align-items:stretch;flex-direction:column}.language-select-label select{width:100%;min-width:0}.generate-button{width:100%}.cwa-footer{font-size:7px}}
