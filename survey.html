@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d1c">
+  <meta name="description" content="Void Big Shine Survey - アンケートの作成・回答・集計">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./survey.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="./survey.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(console.error));
+    }
+  </script>
+  <title>Void Survey | Void Big Shine</title>
+</head>
+<body class="survey-page">
+  <aside class="app-sidebar" aria-label="メインナビゲーション">
+    <a class="sidebar-brand" href="./"><span class="sidebar-mark">V</span><span>VOID BIG SHINE<small>WORKSPACE</small></span></a>
+    <p class="sidebar-label">WORKSPACE</p>
+    <a class="sidebar-link" href="./"><span class="sidebar-icon">∑</span>Calculator</a>
+    <a class="sidebar-link" href="./code_assistant.html"><span class="sidebar-icon">&lt;/&gt;</span>Code Writer Assistant</a>
+    <a class="sidebar-link active" href="./survey.html" aria-current="page"><span class="sidebar-icon">▤</span>Survey Studio</a>
+    <div class="sidebar-bottom"><span class="sidebar-status"></span> SYSTEM ONLINE <small>VOID BIG SHINE / SURVEY</small></div>
+  </aside>
+
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="brand-mark">▤</span><span>VOID <b>SURVEY</b><small>QUESTIONNAIRE / ANALYTICS STUDIO</small></span></a>
+    <span class="version">VOID MASTER / CONNECTED</span>
+    <button id="signout-button" class="install-button" type="button" hidden>ログアウト</button>
+  </header>
+
+  <main class="survey-shell">
+    <section class="survey-intro">
+      <p class="eyebrow">COLLECT / UNDERSTAND / IMPROVE</p>
+      <h1>声を集め、<span>データにする。</span></h1>
+      <p class="lead">アンケートの作成、公開、回答の集計まで。Void Masterと連携する個人用ワークスペース。</p>
+    </section>
+
+    <div id="global-message" class="global-message" role="status" aria-live="polite" hidden></div>
+
+    <section id="auth-view" class="survey-panel auth-panel">
+      <div class="panel-heading"><div><span class="live-dot"></span><span class="eyebrow">OWNER ACCESS</span></div><span class="engine-label">SUPABASE AUTH</span></div>
+      <h2>管理者ログイン</h2>
+      <p class="muted-copy">アンケートの作成・管理には管理者アカウントが必要です。回答用URLはログインなしで開けます。</p>
+      <form id="auth-form" class="survey-form">
+        <label>メールアドレス<input id="auth-email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
+        <label>パスワード<input id="auth-password" type="password" autocomplete="current-password" required minlength="6" maxlength="128" placeholder="6文字以上"></label>
+        <div class="auth-actions">
+          <button class="primary-button" type="submit" id="login-button">ログイン</button>
+          <button class="secondary-button" type="button" id="signup-button">新規登録</button>
+        </div>
+      </form>
+      <p class="fine-print">新規登録後、Supabase側のメール確認が必要な場合があります。メール確認を有効にしている場合は、確認完了後にログインしてください。</p>
+    </section>
+
+    <section id="dashboard-view" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow">YOUR WORKSPACE</p><h2>アンケート一覧</h2></div>
+        <button id="new-survey-button" class="primary-button" type="button">＋ 新しいアンケート</button>
+      </div>
+      <div id="survey-list" class="survey-list"></div>
+    </section>
+
+    <section id="editor-view" class="survey-panel" hidden>
+      <div class="editor-topline">
+        <button id="back-dashboard" class="text-button" type="button">← 一覧へ戻る</button>
+        <span class="eyebrow">SURVEY EDITOR</span>
+      </div>
+      <div class="editor-layout">
+        <div class="editor-main">
+          <h2>アンケート設定</h2>
+          <form id="survey-settings-form" class="survey-form">
+            <label>タイトル<input id="survey-title" maxlength="160" required placeholder="アンケートのタイトル"></label>
+            <label>説明<textarea id="survey-description" rows="3" maxlength="2000" placeholder="回答者に伝える説明"></textarea></label>
+            <div class="editor-actions">
+              <button class="secondary-button" type="submit">設定を保存</button>
+              <button id="publish-button" class="primary-button" type="button">公開する</button>
+              <button id="close-survey-button" class="danger-button" type="button">受付を終了</button>
+            </div>
+          </form>
+          <div class="share-box" id="share-box" hidden>
+            <div><span class="eyebrow">PUBLIC RESPONSE URL</span><p id="share-url"></p></div>
+            <button id="copy-share-url" class="secondary-button" type="button">URLをコピー</button>
+          </div>
+          <div class="question-section-heading"><div><p class="eyebrow">QUESTION BUILDER</p><h2>質問を追加</h2></div></div>
+          <form id="question-form" class="survey-form question-builder">
+            <label>質問文<input id="question-text" maxlength="1000" required placeholder="質問を入力"></label>
+            <div class="question-controls">
+              <label>回答形式<select id="question-type"><option value="single">単一選択</option><option value="multiple">複数選択</option><option value="text">自由記述</option></select></label>
+              <label class="check-label"><input id="question-required" type="checkbox"> 必須回答</label>
+            </div>
+            <label id="options-field">選択肢（1行に1つ）<textarea id="question-options" rows="4" placeholder="選択肢A&#10;選択肢B&#10;選択肢C"></textarea></label>
+            <button class="primary-button" type="submit">質問を追加 ＋</button>
+          </form>
+          <div class="question-section-heading"><div><p class="eyebrow">STRUCTURE</p><h2>質問一覧</h2></div><span id="question-count" class="count-label">0 QUESTIONS</span></div>
+          <div id="question-list" class="question-list"></div>
+        </div>
+        <aside class="editor-aside">
+          <div class="mini-panel"><span class="eyebrow">STATUS</span><strong id="survey-status" class="status-pill">DRAFT</strong><p id="survey-status-help" class="muted-copy">下書き状態です。公開すると回答用URLが有効になります。</p></div>
+          <div class="mini-panel"><span class="eyebrow">RESPONSES</span><strong id="editor-response-count" class="big-count">0</strong><button id="show-results-button" class="secondary-button full-button" type="button">集計を見る</button></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="results-view" class="survey-panel" hidden>
+      <div class="editor-topline"><button id="back-editor" class="text-button" type="button">← 編集へ戻る</button><span class="eyebrow">RESPONSE ANALYTICS</span></div>
+      <div class="results-heading"><div><p class="eyebrow">SURVEY RESULTS</p><h2 id="results-title">集計結果</h2></div><button id="export-csv" class="primary-button" type="button">CSVを書き出す ↓</button></div>
+      <div class="results-summary"><div><span class="eyebrow">TOTAL RESPONSES</span><strong id="total-responses">0</strong></div><div><span class="eyebrow">QUESTIONS</span><strong id="total-questions">0</strong></div></div>
+      <div id="results-content" class="results-content"></div>
+    </section>
+
+    <section id="public-view" class="survey-panel public-panel" hidden>
+      <div class="panel-heading"><div><span class="live-dot"></span><span class="eyebrow">PUBLIC QUESTIONNAIRE</span></div><span class="engine-label">VOID SURVEY</span></div>
+      <div id="public-content"></div>
+    </section>
+
+    <section id="thanks-view" class="survey-panel thanks-panel" hidden>
+      <span class="thanks-mark">✓</span><p class="eyebrow">RESPONSE RECEIVED</p><h2>回答を受け付けました。</h2><p class="muted-copy">ご協力ありがとうございました。</p>
+    </section>
+
+    <footer class="survey-footer"><span>VOID BIG SHINE / SURVEY STUDIO</span><span>POWERED BY VOID MASTER</span></footer>
+  </main>
+</body>
+</html>
