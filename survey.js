@@ -3,7 +3,7 @@
 
   const SUPABASE_URL = "https://cirmydnldoimshyvjkao.supabase.co";
   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_enn8EFBDHBgAdJliRZ7Q9g__j-oNvuw";
-  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  const client = window.supabase?.createClient ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
 
   const $ = (id) => document.getElementById(id);
   const views = ["auth-view","dashboard-view","editor-view","results-view","public-view","thanks-view"];
