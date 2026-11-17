@@ -53,3 +53,21 @@
 .sidebar-status{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#73edc2;box-shadow:0 0 10px #73edc2}
 @media(max-width:800px){.app-sidebar{width:190px;padding:20px 12px}.sidebar-link{font-size:10px}}
 @media(max-width:620px){.app-sidebar{position:relative;width:100%;height:auto;inset:auto;padding:10px 13px;display:grid;grid-template-columns:1fr 1fr;gap:4px;border-right:0;border-bottom:1px solid #25324c}.sidebar-brand{grid-column:1/-1;padding:0 5px 9px}.sidebar-label,.sidebar-bottom{display:none}.sidebar-link{justify-content:center;padding:9px 5px;margin:0;font-size:9px}}
+
+
+/* Developer access password dialog */
+.developer-access-button{width:100%;font:inherit;text-align:left;cursor:pointer;background:transparent}
+.developer-access-button:hover{border-color:#6c5aa6;color:#e9e3ff;background:linear-gradient(100deg,#211a3b,#171c35)}
+.developer-dialog{width:min(420px,calc(100% - 28px));padding:26px;border:1px solid #425277;border-radius:16px;background:linear-gradient(145deg,#151f35,#0b1222);color:var(--text);box-shadow:0 24px 90px #000a}
+.developer-dialog::backdrop{background:#020611c9;backdrop-filter:blur(5px)}
+.developer-dialog h2{margin:8px 0 10px;font-size:23px}
+.developer-dialog-description{margin:0;color:var(--muted);font-size:12px;line-height:1.7}
+.developer-dialog .field-label{margin:23px 0 8px}
+.developer-dialog input{width:100%;padding:13px 14px;border:1px solid #34435f;border-radius:9px;background:#080e1c;color:var(--text);font:14px var(--mono);outline:none}
+.developer-dialog input:focus{border-color:var(--cyan)}
+.developer-access-message{min-height:20px;margin:10px 0;color:#ffb4c4;font-size:11px;line-height:1.6}
+.developer-dialog-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:12px}
+.developer-cancel,.developer-submit{padding:10px 14px;border-radius:8px;font:700 11px var(--sans);cursor:pointer}
+.developer-cancel{border:1px solid #35445f;background:#101a2c;color:#c4cfe2}
+.developer-submit{border:0;background:linear-gradient(110deg,#5bdce7,#9e8cff);color:#08111d}
+.developer-submit:disabled{opacity:.55;cursor:wait}
