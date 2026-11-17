@@ -37,3 +37,19 @@
 .calculator-page footer{padding-left:34px;padding-right:34px}
 @media(max-width:800px){.calculator-page{padding-left:190px}.calculator-page .shell{width:calc(100% - 36px)}}
 @media(max-width:620px){.calculator-page{padding-left:0}.calculator-page .topbar{padding:14px 20px}.calculator-page .shell{width:calc(100% - 26px)}}
+
+/* Shared workspace navigation */
+.app-sidebar{position:fixed;z-index:20;inset:0 auto 0 0;width:238px;padding:25px 18px;background:rgba(8,13,27,.96);border-right:1px solid #25324c;display:flex;flex-direction:column;backdrop-filter:blur(18px)}
+.sidebar-brand{display:flex;align-items:center;gap:11px;padding:0 8px 28px;color:#edf2ff;text-decoration:none;font-size:11px;font-weight:800;letter-spacing:.12em}
+.sidebar-brand small{display:block;margin-top:5px;color:#7586a5;font:9px var(--mono);letter-spacing:.16em}
+.sidebar-mark{display:grid;place-items:center;width:36px;height:36px;border:1px solid #55718e;border-radius:10px;color:var(--cyan);font:22px Georgia;background:linear-gradient(145deg,#17243b,#0b1222)}
+.sidebar-label{padding:0 10px;color:#697a99;font:9px var(--mono);letter-spacing:.18em;margin:15px 0 12px}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:12px 11px;margin:3px 0;border:1px solid transparent;border-radius:8px;color:#aebbd2;text-decoration:none;font-size:11px;transition:.2s}
+.sidebar-link:hover,.sidebar-link.active{color:#e9fbff;background:linear-gradient(100deg,#152840,#171c35);border-color:#344c68}
+.sidebar-link.active{box-shadow:inset 2px 0 #6ceaf4}
+.sidebar-icon{width:22px;text-align:center;color:var(--cyan);font:15px var(--mono)}
+.sidebar-bottom{margin-top:auto;padding:14px 9px;border-top:1px solid #26334c;color:#7ce8c6;font:9px var(--mono);letter-spacing:.1em}
+.sidebar-bottom small{display:block;margin-top:8px;color:#63728d;font-size:8px}
+.sidebar-status{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#73edc2;box-shadow:0 0 10px #73edc2}
+@media(max-width:800px){.app-sidebar{width:190px;padding:20px 12px}.sidebar-link{font-size:10px}}
+@media(max-width:620px){.app-sidebar{position:relative;width:100%;height:auto;inset:auto;padding:10px 13px;display:grid;grid-template-columns:1fr 1fr;gap:4px;border-right:0;border-bottom:1px solid #25324c}.sidebar-brand{grid-column:1/-1;padding:0 5px 9px}.sidebar-label,.sidebar-bottom{display:none}.sidebar-link{justify-content:center;padding:9px 5px;margin:0;font-size:9px}}
