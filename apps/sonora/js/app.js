@@ -190,7 +190,7 @@ function buildKeyboard() {
     const key = document.createElement("button");
     key.type = "button";
     key.className = "black-key";
-    key.style.left = ((p + 1) / 14 * 100) + "%";
+    key.style.left = ((p + 0.5) / 14 * 100) + "%";
     key.setAttribute("aria-label", "MIDI note " + (48 + n));
     key.addEventListener("pointerdown", async () => {
       await audio.init();
