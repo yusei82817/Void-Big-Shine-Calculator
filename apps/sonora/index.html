@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f7f2">
+  <meta name="description" content="SONORA - A paradise for sound creation. Browser-native music studio.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/sonora-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./css/sonora.css">
+  <title>SONORA | Music Beyond The Horizon</title>
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body>
+  <div class="sky-glow sky-glow-a"></div>
+  <div class="sky-glow sky-glow-b"></div>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="SONORA home">
+      <span class="brand-symbol">S</span>
+      <span class="brand-copy">SONORA<small>MUSIC BEYOND THE HORIZON</small></span>
+    </a>
+    <nav class="top-nav" aria-label="Studio navigation">
+      <a href="#studio" class="nav-active">STUDIO</a>
+      <a href="#instruments">INSTRUMENTS</a>
+      <a href="#about">ABOUT</a>
+    </nav>
+    <a class="exit-link" href="../../">VOID BIG SHINE <span>↗</span></a>
+  </header>
+
+  <main class="workspace" id="studio">
+    <section class="welcome-row">
+      <div>
+        <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR PERSONAL SOUND GARDEN</p>
+        <h1>音の、その先へ。</h1>
+        <p class="welcome-copy">Compose freely. Let every note find its horizon.</p>
+      </div>
+      <div class="project-chip"><span class="chip-orb"></span><span><small>UNTITLED PROJECT</small><b>New composition</b></span></div>
+    </section>
+
+    <section class="transport glass-panel" aria-label="Playback controls">
+      <div class="transport-main">
+        <button class="transport-button play-button" id="play-button" type="button" aria-label="再生"><span class="play-glyph">▶</span></button>
+        <button class="transport-button stop-button" id="stop-button" type="button" aria-label="停止">■</button>
+        <div class="transport-divider"></div>
+        <div class="tempo-control">
+          <label for="tempo">TEMPO</label>
+          <div><input id="tempo" type="number" min="40" max="240" value="112"><span>BPM</span></div>
+        </div>
+        <div class="meter-control"><span class="meter-label">METER</span><b>4 / 4</b></div>
+      </div>
+      <div class="transport-status"><span class="status-light"></span><span id="playback-status">READY TO CREATE</span><span class="status-divider">/</span><span id="step-display">BAR 01 · BEAT 01</span></div>
+      <div class="transport-actions">
+        <button class="soft-button" id="save-button" type="button">保存 <span>↗</span></button>
+        <button class="soft-button export-button" id="export-button" type="button">JSONを書き出す <span>↓</span></button>
+      </div>
+    </section>
+
+    <div class="studio-grid">
+      <section class="arrangement glass-panel" aria-labelledby="arrangement-title">
+        <div class="panel-heading">
+          <div><p class="eyebrow">COMPOSITION CANVAS</p><h2 id="arrangement-title">リズム・シーケンサー</h2></div>
+          <span class="panel-index">01 / ARRANGEMENT</span>
+        </div>
+        <p class="panel-description">ステップを選択してリズムを組み立てる。再生中も自由に編集できます。</p>
+        <div class="step-ruler" aria-hidden="true"><span>TRACK</span><div id="step-ruler"></div></div>
+        <div class="sequencer" id="sequencer">
+          <div class="track-row" data-track="pad"><div class="track-name"><span class="track-color pad-color"></span><span><b>Celestial Pad</b><small>SOFT / HARMONIC</small></span></div><div class="step-grid" data-pattern="pad"></div></div>
+          <div class="track-row" data-track="bass"><div class="track-name"><span class="track-color bass-color"></span><span><b>Moon Bass</b><small>LOW / PULSE</small></span></div><div class="step-grid" data-pattern="bass"></div></div>
+          <div class="track-row" data-track="bell"><div class="track-name"><span class="track-color bell-color"></span><span><b>Glass Bells</b><small>HIGH / SPARKLE</small></span></div><div class="step-grid" data-pattern="bell"></div></div>
+          <div class="track-row" data-track="lead"><div class="track-name"><span class="track-color lead-color"></span><span><b>Aurora Lead</b><small>MELODY / MOTION</small></span></div><div class="step-grid" data-pattern="lead"></div></div>
+        </div>
+        <div class="sequencer-footer"><span><i class="legend-dot"></i> ACTIVE STEP</span><span>16 STEPS · 1 BAR LOOP</span></div>
+      </section>
+
+      <section class="instrument glass-panel" id="instruments" aria-labelledby="instrument-title">
+        <div class="panel-heading">
+          <div><p class="eyebrow">SYNTHESIZER LAB</p><h2 id="instrument-title">音色デザイン</h2></div>
+          <span class="panel-index">02 / SYNTH</span>
+        </div>
+        <div class="instrument-display">
+          <div class="wave-title"><span>OSCILLATOR</span><span class="wave-live">● LIVE ENGINE</span></div>
+          <svg class="waveform" viewBox="0 0 420 92" role="img" aria-label="Oscillator waveform preview">
+            <defs><linearGradient id="wave-fill" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#83d9d8"/><stop offset="1" stop-color="#b9a8e9"/></linearGradient></defs>
+            <path class="wave-area" d="M0 46 C20 5 42 5 63 46 S105 87 126 46 S168 5 189 46 S231 87 252 46 S294 5 315 46 S357 87 378 46 S399 5 420 46 L420 92 L0 92Z"/>
+            <path class="wave-line" d="M0 46 C20 5 42 5 63 46 S105 87 126 46 S168 5 189 46 S231 87 252 46 S294 5 315 46 S357 87 378 46 S399 5 420 46"/>
+          </svg>
+          <div class="wave-select" role="group" aria-label="波形">
+            <button class="wave-option active" data-wave="sine" type="button">SINE</button>
+            <button class="wave-option" data-wave="triangle" type="button">TRIANGLE</button>
+            <button class="wave-option" data-wave="sawtooth" type="button">SAW</button>
+            <button class="wave-option" data-wave="square" type="button">SQUARE</button>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <div class="control-heading"><span>FILTER CUTOFF</span><output id="cutoff-value">4.8 kHz</output></div>
+          <input class="range-input" id="cutoff" type="range" min="180" max="12000" value="4800" step="20">
+        </div>
+        <div class="control-section">
+          <div class="control-heading"><span>ATTACK</span><output id="attack-value">0.08 s</output></div>
+          <input class="range-input" id="attack" type="range" min="0.01" max="1.5" value="0.08" step="0.01">
+        </div>
+        <div class="control-section">
+          <div class="control-heading"><span>RELEASE</span><output id="release-value">0.65 s</output></div>
+          <input class="range-input" id="release" type="range" min="0.05" max="2.5" value="0.65" step="0.05">
+        </div>
+        <div class="control-section volume-control">
+          <div class="control-heading"><span>MASTER LEVEL</span><output id="volume-value">65%</output></div>
+          <input class="range-input" id="volume" type="range" min="0" max="1" value="0.65" step="0.01">
+        </div>
+        <button class="preview-button" id="preview-button" type="button"><span>♪</span> 音色を試聴する <i>PLAY TEST NOTE ↗</i></button>
+      </section>
+    </div>
+
+    <section class="keyboard-panel glass-panel">
+      <div class="panel-heading keyboard-heading">
+        <div><p class="eyebrow">HARMONIC PLAYGROUND</p><h2>バーチャル・キーボード</h2></div>
+        <span class="panel-index">03 / PERFORMANCE</span>
+      </div>
+      <p class="panel-description">鍵盤をクリックして音を確認。作曲前の音色チェックにも使えます。</p>
+      <div class="keyboard" id="keyboard" aria-label="Virtual piano keyboard"></div>
+      <div class="keyboard-caption"><span>C3 — B4</span><span>CLICK A KEY TO PLAY</span></div>
+    </section>
+
+    <section class="bottom-row" id="about">
+      <div class="quote-card">
+        <span class="quote-mark">✧</span>
+        <div><p>Every sound begins somewhere.</p><small>SONORA · MUSIC BEYOND THE HORIZON</small></div>
+      </div>
+      <div class="save-state" id="save-state" aria-live="polite"><span class="save-dot"></span> LOCAL PROJECT STORAGE READY</div>
+    </section>
+  </main>
+  <footer><span>SONORA STUDIO</span><span>CRAFTED FOR THE LOVE OF SOUND</span><a href="../../">BACK TO VOID BIG SHINE ↗</a></footer>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js", { scope: "./" }).catch(error => console.error("SONORA service worker:", error));
+      });
+    }
+  </script>
+</body>
+</html>
