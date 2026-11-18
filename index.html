@@ -221,7 +221,7 @@
 
         // Open synchronously during the click gesture so popup blockers do not
         // block the new tab while the server verifies the password.
-        pendingTab = window.open("about:blank", "_blank");
+        pendingTab = window.open("about:blank", "developerAccessWindow", "popup=yes,width=1200,height=800,resizable=yes,scrollbars=yes");
         if (!pendingTab) {
           message.textContent = "新しいタブがブロックされました。ポップアップを許可してください。";
           return;
