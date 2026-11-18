@@ -80,8 +80,18 @@ export class SonoraAudioEngine {
     this.activeVoices.add(voice);
     osc.start(now);
     const noteDuration = Math.max(0.06, duration);
-    this.releaseVoice(voice, now + noteDuration, release);
+    gain.gain.setTargetAtTime(0.0001, now + noteDuration, Math.max(0.012, release / 4));
+    try { osc.stop(now + noteDuration + release * 1.5 + 0.04); } catch {}
+    osc.onended = () => this.cleanupVoice(voice);
     return voice;
+  }
+
+  cleanupVoice(voice) {
+    if (!voice) return;
+    try { voice.osc.disconnect(); } catch {}
+    try { voice.voiceFilter.disconnect(); } catch {}
+    try { voice.gain.disconnect(); } catch {}
+    this.activeVoices.delete(voice);
   }
 
   releaseVoice(voice, when = this.context?.currentTime ?? 0, release = this.release) {
@@ -94,12 +104,7 @@ export class SonoraAudioEngine {
     gain.setValueAtTime(current, end);
     gain.exponentialRampToValueAtTime(0.0001, end + Math.max(0.02, release));
     try { voice.osc.stop(end + Math.max(0.03, release) + 0.02); } catch {}
-    voice.osc.onended = () => {
-      voice.osc.disconnect();
-      voice.voiceFilter.disconnect();
-      voice.gain.disconnect();
-      this.activeVoices.delete(voice);
-    };
+    voice.osc.onended = () => this.cleanupVoice(voice);
   }
 
   async playTestNote(midi = 60) {
