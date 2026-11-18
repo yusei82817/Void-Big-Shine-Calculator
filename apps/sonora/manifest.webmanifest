@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "SONORA Music Studio",
+  "short_name": "SONORA",
+  "description": "A paradise for sound creation. Browser-native music studio.",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8f7f2",
+  "theme_color": "#f8f7f2",
+  "icons": [
+    {
+      "src": "./assets/sonora-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
