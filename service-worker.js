@@ -12,7 +12,15 @@ const APP_SHELL = [
   "./script.js",
   "./worker.js",
   "./manifest.webmanifest",
-  "./icons/icon.svg"
+  "./icons/icon.svg",
+  "./apps/sonora/",
+  "./apps/sonora/index.html",
+  "./apps/sonora/manifest.webmanifest",
+  "./apps/sonora/css/sonora.css",
+  "./apps/sonora/js/app.js",
+  "./apps/sonora/js/audio-engine.js",
+  "./apps/sonora/js/project-store.js",
+  "./apps/sonora/assets/sonora-icon.svg"
 ];
 const EXTERNAL_CACHE_HOSTS = new Set([
   "cdn.jsdelivr.net",
@@ -72,6 +80,9 @@ self.addEventListener("fetch", event => {
       } catch {
         const cachedPage = await caches.match(request);
         if (cachedPage) return cachedPage;
+        if (url.pathname.includes("/apps/sonora")) {
+          return (await caches.match("./apps/sonora/index.html")) || Response.error();
+        }
         if (url.pathname.endsWith("/survey.html")) {
           return (await caches.match("./survey.html")) || (await caches.match("./index.html")) || Response.error();
         }
