@@ -64,6 +64,13 @@ BigIntの整数演算は正確。Decimal.jsは指定有効桁数で丸める十�
 - Math.js / Decimal.js とWebフォントは初回オンライン時にキャッシュを試みる。翻訳機能は外部APIを使うため、オフラインでは利用できない。
 - Chromeのアドレスバーに表示されるインストールアイコン自体はブラウザが制御する。表示されない場合はChromeメニューの「キャスト、保存、共有」→「ページをアプリとしてインストール」も確認。
 
+## SONORA Music Studio
+- Sidebar の「SONORA Music Studio」から音楽制作画面へ移動。
+- アプリ本体は `apps/sonora/` に分離し、専用CSS・JavaScript・Manifest・Service Workerを配置。
+- Web Audio APIによる独自ボイス管理型シンセサイザー、16ステップシーケンサー、仮想鍵盤を搭載。
+- プロジェクトはIndexedDBに保存し、JSON形式で書き出し可能。
+- SONORAは親サイトとは別のPWA ManifestとService Workerスコープを持つ。
+
 ## 扇形の弧の長さ
 画面の「扇形の弧の長さ」で半径 `r` と中央角 `θ`（度）を入力する。
 `L = 2πr × θ / 360` で計算。中央角は0°〜360°。
