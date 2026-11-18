@@ -1,4 +1,4 @@
-const CACHE_NAME = "void-big-shine-v7";
+const CACHE_NAME = "void-big-shine-v8";
 const APP_SHELL = [
   "./",
   "./index.html",
