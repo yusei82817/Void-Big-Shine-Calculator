@@ -43,9 +43,10 @@ function renderSequencer() {
 }
 
 function markStep(step) {
-  $$(".step").forEach((button, index) => {
-    const row = button.closest(".track-row");
-    button.classList.toggle("playing", index === step && state.playing);
+  $(".step-grid").forEach(grid => {
+    [...grid.children].forEach((button, index) => {
+      button.classList.toggle("playing", index === step && state.playing);
+    });
   });
   $("#step-display").textContent = "BAR 01 · BEAT " + String(Math.floor(step / 4) + 1).padStart(2, "0");
 }
