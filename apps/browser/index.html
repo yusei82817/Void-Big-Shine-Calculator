@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d16">
+  <meta name="description" content="Void Big Shineに統合されたVoid Browser。検索、天気、動画、立体音響、計算、HTML/CSS/JS実験環境。">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./spatial-audio.css">
+  <title>Void Big Shine · Browser</title>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="VoidBrowser home">
+      <span class="brand-mark">V</span>
+      <span><strong>VoidBrowser</strong><small>HYBRID ENGINE LAB</small></span>
+    </a>
+    <form id="address-form" class="address-form" role="search" autocomplete="off">
+      <input id="address-input" name="q" type="text" inputmode="url" aria-label="URLまたは検索語" placeholder="URL または検索語を入力…" spellcheck="false" autocapitalize="off" autocomplete="off" required>
+      <select id="search-provider" aria-label="検索プロバイダー"></select>
+      <button class="button button-primary" type="submit">移動 / 検索</button>
+    </form>
+    <div class="top-actions">
+      <a class="button button-quiet" href="../../" aria-label="Void Big Shineへ戻る">← Void Big Shine</a>
+      <span id="engine-status" class="status"><i></i> Engine ready</span>
+      <button id="install-button" class="button button-quiet" hidden>Install app</button>
+      <button id="run-button" class="button button-primary" title="Ctrl+Enter">▶ Run</button>
+    </div>
+  </header>
+
+  <section id="weather-panel" class="weather-panel" aria-labelledby="weather-heading">
+    <div class="weather-panel-heading">
+      <div><span class="eyebrow">LOCAL WEATHER</span><h1 id="weather-heading">Weather</h1></div>
+      <span id="weather-status" role="status">天気データを取得中…</span>
+    </div>
+    <form id="weather-form" class="weather-form" autocomplete="off">
+      <label for="weather-city">地域</label>
+      <input id="weather-city" name="city" type="search" placeholder="市区町村名（例：静岡市）" aria-label="天気を表示する地域" maxlength="100" required>
+      <button id="weather-refresh" class="button button-primary" type="submit">天気を更新</button>
+    </form>
+    <div class="weather-current" aria-live="polite">
+      <div><p id="weather-place">静岡市</p><strong id="weather-temperature">--°</strong><p id="weather-description">天候を取得しています</p></div>
+      <div><p id="weather-high-low">最高 -- / 最低 --</p><p id="weather-details">体感 -- · 湿度 -- · 風 -- · 降水確率 --</p><small id="weather-updated"></small></div>
+    </div>
+    <p class="weather-attribution">天気データ：<a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></p>
+  </section>
+
+
+  <section id="spatial-audio-panel" class="spatial-panel" aria-labelledby="spatial-heading">
+    <div class="spatial-heading">
+      <div><span class="eyebrow">AUDIO LAB</span><h2 id="spatial-heading">Void Spatial Audio</h2></div>
+      <span id="spatial-status" role="status" aria-live="polite">共有タブの音声を待機中</span>
+    </div>
+    <p class="spatial-description">別タブを画面共有し、そのタブの音声をHRTF方式で3D空間に配置します。開始後の共有画面で「タブの音声を共有」を有効にしてください。</p>
+    <div class="spatial-actions">
+      <button id="spatial-start" class="button button-primary" type="button">タブ音声の共有を開始</button>
+      <button id="spatial-stop" class="button button-quiet" type="button" hidden>共有を停止</button>
+    </div>
+    <div class="spatial-controls">
+      <label class="spatial-control" for="spatial-azimuth"><span>左右・方位 <output id="spatial-azimuth-value">0°</output></span><input id="spatial-azimuth" type="range" min="-180" max="180" value="0"></label>
+      <label class="spatial-control" for="spatial-elevation"><span>上下・仰角 <output id="spatial-elevation-value">0°</output></span><input id="spatial-elevation" type="range" min="-60" max="90" value="0"></label>
+      <label class="spatial-control" for="spatial-distance"><span>距離 <output id="spatial-distance-value">1.0 m</output></span><input id="spatial-distance" type="range" min="1" max="20" step="0.5" value="1"></label>
+      <label class="spatial-control" for="spatial-reverb"><span>残響 <output id="spatial-reverb-value">12%</output></span><input id="spatial-reverb" type="range" min="0" max="100" value="12"></label>
+    </div>
+    <p class="spatial-note">HTTPSまたはlocalhostが必要です。画面共有の許可は毎回必要です。共有ダイアログでタブ音声を選択してください。</p>
+  </section>
+  <section id="youtube-panel" class="youtube-panel" aria-labelledby="youtube-heading">
+    <div class="youtube-heading">
+      <div><span class="eyebrow">VIDEO PLAYER</span><h2 id="youtube-heading">YouTube</h2></div>
+      <span id="youtube-status" role="status">検索して動画URLを貼り付けてください。</span>
+    </div>
+    <form id="youtube-search-form" class="youtube-controls" autocomplete="off">
+      <label for="youtube-query">動画を検索</label>
+      <input id="youtube-query" type="search" maxlength="200" placeholder="YouTubeで動画を検索…" required>
+      <button class="button button-primary" type="submit">YouTube検索</button>
+    </form>
+    <form id="youtube-player-form" class="youtube-controls youtube-player-controls" autocomplete="off">
+      <label for="youtube-url">動画URL / ID</label>
+      <input id="youtube-url" type="text" inputmode="url" placeholder="https://www.youtube.com/watch?v=…" required>
+      <button class="button button-primary" type="submit">この画面で再生</button>
+      <button id="youtube-clear" class="button button-quiet" type="button">クリア</button>
+    </form>
+    <div id="youtube-player" class="youtube-player" aria-label="YouTube動画プレーヤー"></div>
+    <div id="youtube-empty" class="youtube-empty">検索結果から動画を選び、そのURLを上の「動画URL / ID」欄に貼り付けてください。</div>
+    <p class="youtube-note">検索結果はYouTubeのタブで開きます。動画の埋め込みが禁止されている場合やログインが必要な場合、この画面では再生できないことがあります。</p>
+  </section>
+
+
+  <section id="calculator-panel" class="calculator-panel" aria-labelledby="calculator-heading">
+    <div class="calculator-heading">
+      <div><span class="eyebrow">UTILITY</span><h2 id="calculator-heading">Void Calculator</h2></div>
+      <span id="calculator-mode" class="calculator-mode">DEG</span>
+    </div>
+    <div class="calculator" role="group" aria-label="計算機">
+      <div class="calculator-screen">
+        <div id="calculator-expression" class="calculator-expression" aria-live="polite"></div>
+        <output id="calculator-display" class="calculator-display" aria-live="polite" aria-label="計算結果">0</output>
+      </div>
+      <div class="calculator-keys">
+        <button type="button" data-action="clear" class="calc-function">AC</button>
+        <button type="button" data-action="backspace" class="calc-function">⌫</button>
+        <button type="button" data-value="(" class="calc-function">(</button>
+        <button type="button" data-value=")" class="calc-function">)</button>
+        <button type="button" data-value="%" class="calc-function">%</button>
+        <button type="button" data-value="7">7</button><button type="button" data-value="8">8</button><button type="button" data-value="9">9</button>
+        <button type="button" data-value="/" class="calc-operator">÷</button>
+        <button type="button" data-value="sqrt(" class="calc-function">√</button>
+        <button type="button" data-value="4">4</button><button type="button" data-value="5">5</button><button type="button" data-value="6">6</button>
+        <button type="button" data-value="*" class="calc-operator">×</button>
+        <button type="button" data-value="^" class="calc-operator">xʸ</button>
+        <button type="button" data-value="1">1</button><button type="button" data-value="2">2</button><button type="button" data-value="3">3</button>
+        <button type="button" data-value="-" class="calc-operator">−</button>
+        <button type="button" data-action="angle" class="calc-function">DEG</button>
+        <button type="button" data-value="0">0</button><button type="button" data-value=".">.</button>
+        <button type="button" data-action="sign" class="calc-function">±</button>
+        <button type="button" data-value="+" class="calc-operator">+</button>
+        <button type="button" data-value="pi" class="calc-function">π</button>
+        <button type="button" data-value="e" class="calc-function">e</button>
+        <button type="button" data-value="sin(" class="calc-function">sin</button>
+        <button type="button" data-value="cos(" class="calc-function">cos</button>
+        <button type="button" data-value="tan(" class="calc-function">tan</button>
+        <button type="button" data-value="asin(" class="calc-function">sin⁻¹</button>
+        <button type="button" data-value="acos(" class="calc-function">cos⁻¹</button>
+        <button type="button" data-value="atan(" class="calc-function">tan⁻¹</button>
+        <button type="button" data-value="log(" class="calc-function">log</button>
+        <button type="button" data-value="ln(" class="calc-function">ln</button>
+        <button type="button" data-value="abs(" class="calc-function">|x|</button>
+        <button type="button" data-action="equals" class="calc-equals">=</button>
+      </div>
+      <p class="calculator-hint">Enterで計算、Escでクリア。キーボード入力にも対応。</p>
+    </div>
+  </section>
+
+  <main class="workspace">
+    <section class="editor-panel" aria-label="Code editor">
+      <div class="panel-heading">
+        <div><span class="eyebrow">PLAYGROUND</span><h1>Engine workspace</h1></div>
+        <div class="editor-actions">
+          <button id="sample-button" class="button button-quiet">Load sample</button>
+          <button id="clear-button" class="button button-quiet">Clear</button>
+        </div>
+      </div>
+      <div class="editors">
+        <section class="editor-card">
+          <div class="editor-title"><span class="file-dot html-dot"></span>HTML <span class="file-ext">index.html</span></div>
+          <textarea id="html-input" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="HTML source"><main class="demo">
+  <p class="tag">VOID / 001</p>
+  <h1>Hello, <span>world.</span></h1>
+  <p>This page is rendered inside an isolated preview.</p>
+  <button id="demo-button">Test JavaScript</button>
+  <p id="message" aria-live="polite">Engine standing by.</p>
+</main></textarea>
+        </section>
+        <section class="editor-card">
+          <div class="editor-title"><span class="file-dot css-dot"></span>CSS <span class="file-ext">style.css</span></div>
+          <textarea id="css-input" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="CSS source">body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #101827;
+  color: #e8efff;
+  font: 16px system-ui, sans-serif;
+}
+.demo { max-width: 34rem; padding: 2rem; }
+.tag { color: #76a9ff; letter-spacing: .2em; font-size: .75rem; }
+h1 { font-size: clamp(2.5rem, 8vw, 5rem); margin: .2em 0; }
+h1 span { color: #79aaff; }
+button {
+  border: 1px solid #547bbd;
+  border-radius: 10px;
+  padding: .75rem 1rem;
+  background: #1c3153;
+  color: white;
+  cursor: pointer;
+}
+button:hover { background: #294674; }</textarea>
+        </section>
+        <section class="editor-card editor-card-js">
+          <div class="editor-title"><span class="file-dot js-dot"></span>JavaScript <span class="file-ext">script.js</span></div>
+          <textarea id="js-input" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="JavaScript source">document.querySelector("#demo-button")?.addEventListener("click", () => {
+  document.querySelector("#message").textContent =
+    "JavaScript executed in the preview sandbox.";
+});</textarea>
+        </section>
+      </div>
+      <footer class="editor-footer"><span id="source-stats">HTML · CSS · JS</span><span>Ctrl / ⌘ + Enter to run</span></footer>
+    </section>
+
+    <section class="preview-panel" aria-label="Preview">
+      <div class="preview-heading">
+        <div><span class="eyebrow">LIVE OUTPUT</span><h2>Preview</h2></div>
+        <span class="preview-lock">▣ Sandboxed</span>
+      </div>
+      <div class="preview-frame-wrap">
+        <div class="browser-chrome">
+          <div class="window-dots"><i></i><i></i><i></i></div>
+          <div class="address-bar"><span>◇</span> void://preview</div>
+          <button id="refresh-button" class="refresh-button" aria-label="Refresh preview" title="Refresh preview">↻</button>
+        </div>
+        <iframe id="preview" title="VoidBrowser page preview" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
+      </div>
+      <div class="console-panel">
+        <div class="console-heading"><span>ENGINE LOG</span><button id="clear-log-button" class="text-button">Clear log</button></div>
+        <div id="engine-log" class="console-output" role="log" aria-live="polite"><p><span class="log-mark">›</span> VoidBrowser initialized.</p><p><span class="log-mark">›</span> Preview scripts run in a sandbox.</p></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><span>VoidBrowser · Experimental hybrid engine</span><span>Not a replacement for Chromium or WebKit</span></footer>
+  <script src="./core/search.js"></script>
+  <script src="./features/weather.js"></script>
+  <script src="./features/youtube.js"></script>
+  <script src="./features/spatial-audio.js"></script>
+  <script src="./features/calculator.js"></script>
+  <script src="./core/engine.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const CACHE_NAME = "void-big-shine-v8";
+const CACHE_NAME = "void-big-shine-v10";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -20,7 +20,14 @@ const APP_SHELL = [
   "./apps/sonora/js/app.js",
   "./apps/sonora/js/audio-engine.js",
   "./apps/sonora/js/project-store.js",
-  "./apps/sonora/assets/sonora-icon.svg"
+  "./apps/sonora/assets/sonora-icon.svg",
+  "./apps/browser/", "./apps/browser/index.html",
+  "./apps/browser/style.css", "./apps/browser/spatial-audio.css",
+  "./apps/browser/core/search.js", "./apps/browser/core/engine.js",
+  "./apps/browser/features/weather.js", "./apps/browser/features/youtube.js",
+  "./apps/browser/features/spatial-audio.js", "./apps/browser/features/calculator.js",
+  "./apps/browser/app.js", "./apps/browser/sw.js",
+  "./apps/browser/manifest.json", "./apps/browser/icon.svg"
 ];
 const EXTERNAL_CACHE_HOSTS = new Set([
   "cdn.jsdelivr.net",
@@ -80,6 +87,9 @@ self.addEventListener("fetch", event => {
       } catch {
         const cachedPage = await caches.match(request);
         if (cachedPage) return cachedPage;
+        if (url.pathname.includes("/apps/browser")) {
+          return (await caches.match("./apps/browser/index.html")) || Response.error();
+        }
         if (url.pathname.includes("/apps/sonora")) {
           return (await caches.match("./apps/sonora/index.html")) || Response.error();
         }
