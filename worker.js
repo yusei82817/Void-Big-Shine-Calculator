@@ -30,10 +30,12 @@ function bisect(expression,a,b,tol=1e-10,maxIter=100){a=Number(a);b=Number(b);to
 function newton(expression,x0,tol=1e-10,maxIter=50){let x=Number(x0);tol=Number(tol);maxIter=integer(maxIter,"反復回数");if(!Number.isFinite(x)||!Number.isFinite(tol)||tol<=0||maxIter<1||maxIter>500)throw Error("newton の初期値・許容誤差・反復回数を確認してね。");for(let i=0;i<maxIter;i++){const y=Number(math.evaluate(expression,{x}));if(!Number.isFinite(y))throw Error("Newton法の途中で有限でない値が出たよ。");if(Math.abs(y)<=tol)return x;const d=derivative(expression,x,Math.max(1e-7,Math.abs(x)*1e-7));if(!Number.isFinite(d)||Math.abs(d)<1e-14)throw Error("導関数が小さすぎるためNewton法を続けられないよ。");const next=x-y/d;if(!Number.isFinite(next))throw Error("Newton法が発散したよ。");if(Math.abs(next-x)<=tol)return next;x=next;}return x;}
 
 function evaluateExpression(expression,maxTerms){
+ // 通常の数値演算をBigNumberモードに切り替える。精度は有効桁数1,000桁。
+ math.config({ number: "BigNumber", precision: 1000 });
  const scope={det:A=>matrixOp('det',A),inv:A=>matrixOp('inv',A),transpose:A=>matrixOp('transpose',A),matmul:(A,B)=>matrixOp('matmul',A,B),cplx,integral:(e,a,b,n)=>integral(String(e),a,b,n),diff:(e,x,h)=>derivative(String(e),x,h),rootBisect:(e,a,b,tol,it)=>bisect(String(e),a,b,tol,it),newton:(e,x,tol,it)=>newton(String(e),x,tol,it),sum:(e,a,b)=>sum(e,a,b,maxTerms),prod:(e,a,b)=>prod(e,a,b,maxTerms),zetaEuler:(s,n)=>euler(s,n,maxTerms),delta:(a,b)=>Number(a)===Number(b)?1:0,heaviside:x=>Number(x)<0?0:Number(x)>0?1:.5,sinc:x=>Number(x)===0?1:math.sin(x)/x,beta:(a,b)=>math.gamma(a)*math.gamma(b)/math.gamma(a+b),fact,choose,fib,bigPow,gcd,lcm,modPow,isPrime:isPrimeBig,factorize,primeCount,dadd:(a,b,p)=>dec("add",a,b,p),dsub:(a,b,p)=>dec("sub",a,b,p),dmul:(a,b,p)=>dec("mul",a,b,p),ddiv:(a,b,p)=>dec("div",a,b,p),dpow:(a,b,p)=>dec("pow",a,b,p),dsqrt:(a,p)=>dec("sqrt",a,undefined,p)};
  return math.evaluate(expression,scope);
 }
-function formatValue(v){if(typeof v==="string")return v;if(v&&v.value!==undefined&&v.count!==undefined)return math.format(v.value,{precision:14});return math.format(v,{precision:14,lowerExp:-9,upperExp:14});}
+function formatValue(v){if(typeof v==="string")return v;if(v&&v.value!==undefined&&v.count!==undefined)return math.format(v.value,{precision:14});return math.format(v,{precision:1000,lowerExp:-9,upperExp:1000});}
 self.onmessage=event=>{
  const {id,expression,maxTerms}=event.data;
  const started=performance.now();
